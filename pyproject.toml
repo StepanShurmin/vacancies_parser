@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "vacancies-parser"
+version = "0.1.0"
+description = ""
+authors = ["StepanShurmin <shurmin.sa@gmail.com>"]
+readme = "README.md"
+packages = [{include = "vacancies_parser"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+black = {extras = ["d"], version = "^23.7.0"}
+
+
+[tool.poetry.group.dev.dependencies]
+requests = "^2.31.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
