@@ -9,16 +9,26 @@ API_KEY = os.getenv("SJ_API_KEY")
 
 
 class SuperJobAPI(ApiJobSites):
+    """Класс для запроса вакансий через SJ API."""
+
     url = "https://api.superjob.ru/2.0/vacancies/"
 
-    def __init__(self, keyword):
+    def __init__(self, keyword: str) -> None:
+        """
+        Инициализация класса SuperJobAPI.
+        Аргументы: keyword (str): Ключевое слово для поиска вакансий.
+        """
         self.params = {"count": 10, "page": None, "keyword": keyword, "archive": False, "agreement": False}
         self.secret_key = API_KEY
         self.headers = {"X-Api-App-Id": self.secret_key}
         self.keyword = keyword
         self.vacancies = []
 
-    def get_request(self):
+    def get_request(self) -> list[dict]:
+        """
+        Отправляет запрос к SJ API для получения вакансий.
+        Возвращает: cписок словарей с информацией о вакансиях.
+        """
         response = requests.get(self.url, headers=self.headers, params=self.params)
         if response.status_code == 200:
             return response.json()["objects"]
@@ -26,6 +36,10 @@ class SuperJobAPI(ApiJobSites):
             print(f"Ошибка получения вакансий! Статус-код: {response.status_code}")
 
     def get_vacancies(self, page_count=5):
+        """
+        Получает вакансии через SJ API.
+        Аргументы: page_count (int): Количество страниц для получения. По умолчанию 5.
+        """
         self.vacancies = []
         for page in range(page_count):
             time.sleep(1)
@@ -42,7 +56,11 @@ class SuperJobAPI(ApiJobSites):
                 self.vacancies.extend(page_vacancies)
                 print(f"Загружено вакансий: {len(page_vacancies)}")
 
-    def get_formatted_vacancies(self):
+    def get_formatted_vacancies(self) -> list[dict]:
+        """
+        Возвращает отформатированные данные о вакансиях.
+        Возвращает: список словарей с отформатированной информацией о вакансиях.
+        """
         formatted_vacancies = []
 
         for vacancy in self.vacancies:

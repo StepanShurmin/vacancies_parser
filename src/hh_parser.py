@@ -6,9 +6,15 @@ from src.abstract_classes import ApiJobSites
 
 
 class HeadHunterAPI(ApiJobSites):
+    """Класс для запроса вакансий через HH API."""
+
     url = "https://api.hh.ru/vacancies"
 
     def __init__(self, keyword):
+        """
+        Инициализация класса HeadHunterAPI.
+        Аргументы: keyword (str): Ключевое слово для поиска вакансий.
+        """
         self.headers = {
             "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.5.2 Safari/605.1.15"
         }
@@ -16,14 +22,22 @@ class HeadHunterAPI(ApiJobSites):
         self.keyword = keyword
         self.vacancies = []
 
-    def get_request(self):
+    def get_request(self) -> list[dict]:
+        """
+        Отправляет запрос к HH API для получения вакансий.
+        Возвращает: cписок словарей с информацией о вакансиях.
+        """
         response = requests.get(self.url, headers=self.headers, params=self.params)
         if response.status_code == 200:
             return response.json()["items"]
         else:
             print(f"Ошибка получения вакансий! Статус-код: {response.status_code}")
 
-    def get_vacancies(self, page_count=5):
+    def get_vacancies(self, page_count=5) -> None:
+        """
+        Получает вакансии через HH API.
+        Аргументы: page_count (int): Количество страниц для получения. По умолчанию 5.
+        """
         self.vacancies = []
         for page in range(page_count):
             time.sleep(1)
@@ -41,7 +55,11 @@ class HeadHunterAPI(ApiJobSites):
                 print(f"Не удалось загрузить страницу {page + 1}")
                 break
 
-    def get_formatted_vacancies(self):
+    def get_formatted_vacancies(self) -> list[dict]:
+        """
+        Возвращает отформатированные данные о вакансиях.
+        Возвращает: список словарей с отформатированной информацией о вакансиях.
+        """
         formatted_vacancies = []
 
         for vacancy in self.vacancies:

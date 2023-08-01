@@ -5,10 +5,11 @@ from src.utils import filter_vacancies, sort_by_salary_from, get_top_vacancies, 
 
 
 def main():
-    platforms = ["HeadHunter", "SuperJob"]
+    """Основная функция, которая запускает программу по поиску вакансий."""
+    platforms: list[str] = ["HeadHunter", "SuperJob"]
     platform = None
-    vacancies_in_json = []
-
+    vacancies_in_json: list = []
+    # Выбор платформы
     try:
         selected_platform = int(
             input(
@@ -29,19 +30,19 @@ def main():
             platform = platforms[1]
         elif selected_platform == 3:
             platform = platforms
-
+        # Вывод сообщения о выбранных платформах
         if platform != platforms:
             print(f"Вы выбрали платформу {platform}")
         else:
             print(f"Вы выбрали обе платформы: HeadHunter и SuperJob")
-
-        keyword = input("Введите ключевые слова для поиска через пробел: ").lower()
+        # Получение от пользователя запроса (название вакансии)
+        keyword: str = input("Введите ключевые слова для поиска через пробел: ").lower()
         try:
             page_count = int(input("Введите количество страниц, с которых хотите получить результат: "))
         except ValueError:
             print("Значение должно быть числом.")
             page_count = int(input("Введите количество страниц, с которых хотите получить результат: "))
-
+        # Получение вакансий с разных платформ
         hh = HeadHunterAPI(keyword)
         sj = SuperJobAPI(keyword)
         if platform == "HeadHunter":
