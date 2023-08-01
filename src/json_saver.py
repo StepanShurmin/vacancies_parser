@@ -21,7 +21,7 @@ class JSONSaver(FILESaver):
         Сохраняет данные в JSON-файл.
         Аргументы: vacancies_json (str): JSON-строка с данными о вакансиях.
         """
-        with open(self.filename, "w") as file:
+        with open(self.filename, "w", encoding="utf-8") as file:
             json.dump(vacancies_json, file, indent=4, ensure_ascii=False)
 
     def add_vacancy(self) -> list:
